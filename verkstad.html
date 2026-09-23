@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- BYT: titel och beskrivning för varje kund -->
+<title>Björks Bil & Däck – service, däck och reparationer</title>
+<meta name="description" content="Bilverkstad för service, däckbyte och reparationer av alla bilmärken. Boka tid online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --asphalt:#2B2D31; --asphalt-2:#35383D; --signal:#FFC400; --concrete:#EDEDE8;
+    --white:#FFFFFF; --steel:#6B7078; --eu:#003399; --red:#B3261E;
+    --display:"Barlow Condensed", "Arial Narrow", sans-serif;
+    --body:"Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--concrete);color:var(--asphalt);font:400 17px/1.6 var(--body)}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--signal);outline-offset:3px}
+  .wrap{width:min(1120px,100% - 40px);margin-inline:auto}
+  .btn{display:inline-block;background:var(--signal);color:var(--asphalt);border:0;border-radius:4px;padding:15px 24px;font:800 20px/1 var(--display);letter-spacing:.02em;text-decoration:none;cursor:pointer}
+  .btn:hover{background:#FFD23F}
+  .btn.ghost{background:transparent;color:var(--white);box-shadow:inset 0 0 0 2px var(--white)}
+  .btn[disabled]{opacity:.6;cursor:default}
+
+  .top{background:var(--asphalt);color:var(--white)}
+  header{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+  .logo{font:800 26px/1 var(--display);text-decoration:none}
+  .head-tel{font:600 20px var(--display);text-decoration:none;color:var(--signal)}
+  .hero{padding:56px 0 88px;display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:end}
+  .hero h1{font:800 clamp(56px,10vw,132px)/.88 var(--display);margin:0 0 24px;letter-spacing:-.01em}
+  .hero p{font-size:20px;color:#C9CCD1;max-width:40ch;margin:0 0 28px}
+  .actions{display:flex;flex-wrap:wrap;gap:12px}
+  .facts{border-left:4px solid var(--signal);padding-left:24px}
+  .facts div{padding:10px 0}
+  .facts strong{display:block;font:800 30px/1.1 var(--display);color:var(--white)}
+  .facts span{color:#A9ADB4}
+
+  section{padding:80px 0}
+  h2{font:800 clamp(38px,6vw,64px)/1 var(--display);margin:0 0 14px}
+  .lead{color:var(--steel);max-width:54ch;margin:0 0 32px}
+
+  .prices{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:56px}
+  .prices li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;border-bottom:2px solid #D2D2CB}
+  .prices strong{font-weight:600}
+  .prices small{display:block;color:var(--steel);font-size:15px}
+  .prices .p{font:800 24px var(--display);white-space:nowrap}
+
+  /* Bokning */
+  .book{background:var(--white);border-radius:6px;padding:48px clamp(20px,4vw,56px);border-top:10px solid var(--signal)}
+  .plate-wrap{max-width:340px}
+  .plate{display:flex;border:3px solid var(--asphalt);border-radius:8px;overflow:hidden;background:#fff;height:72px}
+  .plate .eu{background:var(--eu);color:#fff;width:44px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;font:800 20px var(--display);flex:none}
+  .plate .eu i{display:block;width:22px;height:22px;border-radius:50%;border:2px dotted #FFD700;margin-bottom:auto;margin-top:8px}
+  .plate input{border:0;border-radius:0;height:100%;font:800 40px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:0 10px}
+  .plate:focus-within{box-shadow:0 0 0 4px var(--signal)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+  .grid .full{grid-column:1/-1}
+  label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
+  input,select,textarea{width:100%;font:inherit;padding:12px 14px;border:2px solid #CFCFC8;border-radius:4px;background:#fff;color:var(--asphalt)}
+  input:focus,select:focus,textarea:focus{border-color:var(--asphalt);outline:none}
+  .plate input:focus{outline:none}
+  textarea{min-height:100px;resize:vertical}
+  .radio{display:flex;gap:12px;flex-wrap:wrap}
+  .radio label{display:flex;gap:8px;align-items:center;font-weight:500;border:2px solid #CFCFC8;border-radius:4px;padding:10px 14px;cursor:pointer;margin:0}
+  .radio input{width:auto}
+  .radio label:has(input:checked){border-color:var(--asphalt);background:var(--concrete)}
+  .note{color:var(--steel);font-size:15px}
+  .error{color:var(--red);font-weight:600}
+  .done h3{font:800 40px var(--display);margin:0 0 6px}
+
+  .info{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+  table{width:100%;border-collapse:collapse}
+  td{padding:11px 0;border-bottom:2px solid #D2D2CB}
+  td:last-child{text-align:right}
+  tr.today td{font-weight:600}
+  tr.today td:first-child{box-shadow:inset 4px 0 0 var(--signal);padding-left:12px}
+  .map{border:0;width:100%;min-height:340px;height:100%;border-radius:6px;background:#D9D9D2}
+  .review{background:var(--asphalt);color:var(--white);text-align:center}
+  .review p{color:#C9CCD1;max-width:44ch;margin:0 auto 28px}
+  footer{padding:32px 0 56px;color:var(--steel);font-size:15px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+
+  @media (max-width:820px){
+    .hero,.info,.grid,.prices{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="wrap">
+    <header>
+      <a class="logo" href="#" data-bind="namn"></a>
+      <a class="head-tel" data-tel></a>
+    </header>
+    <div class="hero">
+      <div>
+        <h1 data-bind="rubrik"></h1>
+        <p data-bind="slogan"></p>
+        <div class="actions">
+          <a class="btn" href="#boka">Boka tid</a>
+          <a class="btn ghost" data-tel-btn>Ring oss</a>
+        </div>
+      </div>
+      <div class="facts" id="facts"></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section id="priser">
+    <h2>Tjänster och priser</h2>
+    <p class="lead" data-bind="prisText"></p>
+    <ul class="prices" id="prices"></ul>
+  </section>
+
+  <div class="book" id="boka">
+    <h2>Boka tid</h2>
+    <p class="lead">Fyll i registreringsnumret och vad du behöver hjälp med. Vi hör av oss med tid och pris.</p>
+    <form name="verkstadsbokning" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="bokform">
+      <input type="hidden" name="form-name" value="verkstadsbokning">
+      <p hidden><label>Lämna tomt <input name="bot-field"></label></p>
+      <div class="plate-wrap">
+        <label for="regnr">Registreringsnummer</label>
+        <div class="plate"><div class="eu" aria-hidden="true"><i></i>S</div>
+          <input id="regnr" name="regnr" maxlength="7" autocomplete="off" placeholder="ABC 123" required
+                 pattern="[A-Za-zÅÄÖåäö]{3} ?[0-9]{2}[A-Za-z0-9]" title="Tre bokstäver och tre tecken, t.ex. ABC 123 eller ABC 12D">
+        </div>
+      </div>
+      <div class="grid">
+        <div><label for="tjanst">Vad gäller det?</label><select id="tjanst" name="tjanst" required></select></div>
+        <div><label for="datum">Önskad dag</label><input type="date" id="datum" name="datum" required></div>
+        <div class="full">
+          <label id="lbl-tid">Tid på dagen</label>
+          <div class="radio" role="radiogroup" aria-labelledby="lbl-tid">
+            <label><input type="radio" name="tid" value="Förmiddag" checked> Förmiddag</label>
+            <label><input type="radio" name="tid" value="Eftermiddag"> Eftermiddag</label>
+            <label><input type="radio" name="tid" value="Spelar ingen roll"> Spelar ingen roll</label>
+          </div>
+        </div>
+        <div><label for="namn">Namn</label><input id="namn" name="namn" autocomplete="name" required></div>
+        <div><label for="telefon">Telefon</label><input id="telefon" name="telefon" type="tel" autocomplete="tel" required></div>
+        <div class="full"><label for="beskrivning">Beskriv problemet (valfritt)</label><textarea id="beskrivning" name="beskrivning" placeholder="T.ex. gnisslar vid inbromsning, varningslampa lyser"></textarea></div>
+      </div>
+      <p class="note" id="datum-note"></p>
+      <p class="error" id="error" hidden></p>
+      <button class="btn" type="submit" id="submit" style="margin-top:12px">Skicka bokning</button>
+    </form>
+    <div class="done" id="done" hidden role="status">
+      <h3>Tack, vi har fått din bokning</h3>
+      <p id="done-text"></p>
+    </div>
+  </div>
+
+  <section class="info" id="hitta">
+    <div>
+      <h2>Öppettider</h2>
+      <table id="hours"></table>
+      <p style="margin-top:28px"><span data-bind="adress"></span><br><a data-tel></a><br><a data-mail></a></p>
+    </div>
+    <iframe class="map" id="map" title="Karta" loading="lazy"></iframe>
+  </section>
+</div>
+
+<section class="review">
+  <div class="wrap">
+    <h2>Nöjd med jobbet?</h2>
+    <p>Lämna gärna ett omdöme på Google. Det hjälper andra bilägare att hitta en verkstad de kan lita på.</p>
+    <a class="btn" id="review-link" target="_blank" rel="noopener">Skriv en recension</a>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <span>© <span id="year"></span> <span data-bind="namn"></span></span>
+    <span data-bind="adress"></span>
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   ÄNDRA HÄR FÖR VARJE KUND
+   ============================================================ */
+const CONFIG = {
+  namn: "Björks Bil & Däck",
+  rubrik: "Service och reparationer för alla bilmärken",
+  slogan: "Fast pris innan vi börjar, och bilen tillbaka samma dag när det går.",
+  telefon: "012-345 88 99",
+  epost: "verkstad@bjorksbil.se",
+  adress: "Industrigatan 21, 123 45 Småstad",
+  googleRecension: "https://g.page/r/DIN-LANK/review",
+  fakta: [
+    { stor: "Sedan 1998", liten: "Familjeägd verkstad" },
+    { stor: "Alla märken", liten: "Service enligt tillverkarens schema" },
+    { stor: "Lånebil", liten: "Boka när du bokar tid" }
+  ],
+  prisText: "Alla priser inklusive moms. Vi ringer alltid innan vi gör något utöver det du bokat.",
+  tjanster: [
+    { namn: "Däckbyte", info: "Skifte av hjul, inkl. balansering vid behov", pris: "från 495 kr" },
+    { namn: "Däckhotell", info: "Förvaring och tvätt per säsong", pris: "795 kr" },
+    { namn: "Service", info: "Enligt tillverkarens serviceprogram", pris: "från 2 495 kr" },
+    { namn: "Bromsar", info: "Byte av skivor och klossar, fram eller bak", pris: "från 1 995 kr" },
+    { namn: "AC-service", info: "Läckagekontroll och påfyllning", pris: "995 kr" },
+    { namn: "Felsökning", info: "Diagnos med testutrustning", pris: "695 kr" }
+  ],
+  oppettider: {
+    mandag: ["07:00","17:00"], tisdag: ["07:00","17:00"], onsdag: ["07:00","17:00"],
+    torsdag: ["07:00","17:00"], fredag: ["07:00","15:00"], lordag: null, sondag: null
+  }
+};
+/* ============================================================ */
+
+const DAGAR = ["sondag","mandag","tisdag","onsdag","torsdag","fredag","lordag"];
+const DAGNAMN = {mandag:"Måndag",tisdag:"Tisdag",onsdag:"Onsdag",torsdag:"Torsdag",fredag:"Fredag",lordag:"Lördag",sondag:"Söndag"};
+const $ = s => document.querySelector(s);
+const iso = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const telHref = t => "tel:"+t.replace(/[^\d+]/g,"");
+
+document.querySelectorAll("[data-bind]").forEach(el => el.textContent = CONFIG[el.dataset.bind]);
+document.querySelectorAll("[data-tel]").forEach(el => { el.textContent = CONFIG.telefon; el.href = telHref(CONFIG.telefon); });
+document.querySelectorAll("[data-tel-btn]").forEach(el => el.href = telHref(CONFIG.telefon));
+document.querySelectorAll("[data-mail]").forEach(el => { el.textContent = CONFIG.epost; el.href = "mailto:"+CONFIG.epost; });
+$("#review-link").href = CONFIG.googleRecension;
+$("#map").src = "https://maps.google.com/maps?q="+encodeURIComponent(CONFIG.adress)+"&z=15&output=embed";
+$("#year").textContent = new Date().getFullYear();
+
+CONFIG.fakta.forEach(f => { const d = document.createElement("div"); d.innerHTML = "<strong></strong><span></span>"; d.querySelector("strong").textContent = f.stor; d.querySelector("span").textContent = f.liten; $("#facts").append(d); });
+
+CONFIG.tjanster.forEach(t => {
+  const li = document.createElement("li");
+  li.innerHTML = `<div><strong></strong><small></small></div><span class="p"></span>`;
+  li.querySelector("strong").textContent = t.namn; li.querySelector("small").textContent = t.info; li.querySelector(".p").textContent = t.pris;
+  $("#prices").append(li);
+  const o = document.createElement("option"); o.textContent = t.namn; o.value = t.namn; $("#tjanst").append(o);
+});
+const annat = document.createElement("option"); annat.textContent = "Annat"; annat.value = "Annat"; $("#tjanst").append(annat);
+
+// Öppettider
+const idagKey = DAGAR[new Date().getDay()];
+["mandag","tisdag","onsdag","torsdag","fredag","lordag","sondag"].forEach(d => {
+  const h = CONFIG.oppettider[d], tr = document.createElement("tr");
+  if (d === idagKey) tr.className = "today";
+  tr.innerHTML = `<td>${DAGNAMN[d]}</td><td>${h ? h[0]+"–"+h[1] : "Stängt"}</td>`;
+  $("#hours").append(tr);
+});
+
+// Datum: från imorgon, varna för stängda dagar
+const datum = $("#datum");
+const imorgon = new Date(); imorgon.setDate(imorgon.getDate()+1);
+datum.min = iso(imorgon);
+for (let i = 1; i < 10; i++) { const d = new Date(); d.setDate(d.getDate()+i); if (CONFIG.oppettider[DAGAR[d.getDay()]]) { datum.value = iso(d); break; } }
+function checkDag(){
+  if (!datum.value) return true;
+  const [y,m,d] = datum.value.split("-").map(Number);
+  const open = !!CONFIG.oppettider[DAGAR[new Date(y,m-1,d).getDay()]];
+  $("#datum-note").textContent = open ? "" : "Vi har stängt den dagen. Välj en vardag.";
+  return open;
+}
+datum.addEventListener("change", checkDag);
+
+// Regnummer: versaler och mellanslag
+$("#regnr").addEventListener("input", e => {
+  let v = e.target.value.toUpperCase().replace(/[^A-ZÅÄÖ0-9]/g, "");
+  if (v.length > 3) v = v.slice(0,3) + " " + v.slice(3,6);
+  e.target.value = v;
+});
+
+$("#bokform").addEventListener("submit", async e => {
+  e.preventDefault();
+  const form = e.target, btn = $("#submit"), err = $("#error");
+  if (!form.reportValidity()) return;
+  if (!checkDag()) { err.textContent = "Välj en dag då verkstaden har öppet."; err.hidden = false; return; }
+  err.hidden = true; btn.disabled = true; btn.textContent = "Skickar…";
+  try {
+    if (location.protocol === "file:") throw new Error("preview");
+    const res = await fetch("/", { method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"}, body:new URLSearchParams(new FormData(form)).toString() });
+    if (!res.ok) throw new Error("fail");
+    form.hidden = true; $("#done").hidden = false;
+    $("#done-text").textContent = `${$("#tjanst").value} för ${$("#regnr").value}. Vi ringer dig på ${$("#telefon").value} och bekräftar tid och pris.`;
+  } catch (x) {
+    err.textContent = x.message === "preview"
+      ? "Förhandsvisning: bokningen skickas först när sidan ligger på Netlify."
+      : `Bokningen gick inte att skicka. Försök igen eller ring ${CONFIG.telefon}.`;
+    err.hidden = false; btn.disabled = false; btn.textContent = "Skicka bokning";
+  }
+});
+</script>
+</body>
+</html>
