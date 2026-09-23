@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- BYT: titel och beskrivning för varje kund -->
+<title>Garnkorgen – garn, stickor och kurser</title>
+<meta name="description" content="Garnbutik med stort sortiment, personlig hjälp och kurser. Se öppettider och hitta hit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#FFFFFF; --navy:#1B2B4B; --sun:#F2C14E; --sky:#E8EEF7; --muted:#56627A;
+    --open:#2F7D4F; --closed:#A33A2E;
+    --font:"Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--white);color:var(--navy);font:400 17px/1.6 var(--font)}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+  .wrap{width:min(1080px,100% - 40px);margin-inline:auto}
+  .btn{display:inline-block;background:var(--navy);color:#fff;border:0;border-radius:10px;padding:14px 22px;font:600 16px/1 var(--font);text-decoration:none;cursor:pointer}
+  .btn:hover{background:#2A3E66}
+  .btn[disabled]{opacity:.6;cursor:default}
+
+  header{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+  .logo{font:800 24px/1 var(--font);text-decoration:none;letter-spacing:-.02em}
+  nav{display:flex;gap:22px}
+  nav a{text-decoration:none;font-weight:600}
+
+  .hero{padding:56px 0 64px}
+  .hero h1{font:800 clamp(48px,9vw,112px)/.95 var(--font);letter-spacing:-.035em;margin:0 0 20px;max-width:12ch}
+  .hero p{font-size:20px;max-width:42ch;color:var(--muted);margin:0}
+
+  /* Öppet nu: sidans huvudsak */
+  .status{background:var(--sun);border-radius:24px;padding:36px clamp(22px,4vw,48px);display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;margin-bottom:24px}
+  .status-main{font:800 clamp(34px,5.5vw,64px)/1 var(--font);letter-spacing:-.02em;display:flex;align-items:center;gap:18px}
+  .dot{width:.5em;height:.5em;border-radius:50%;background:var(--open);flex:none}
+  .dot.closed{background:var(--closed)}
+  .status-sub{font-size:19px;margin:10px 0 0}
+  .status .btn{background:var(--navy)}
+
+  section{padding:72px 0}
+  h2{font:800 clamp(32px,4.5vw,48px)/1.05 var(--font);letter-spacing:-.02em;margin:0 0 14px}
+  .lead{color:var(--muted);max-width:56ch;margin:0 0 32px}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+  .about p{max-width:52ch}
+  .sortiment{list-style:none;padding:0;margin:0}
+  .sortiment li{padding:18px 0;border-top:2px solid var(--navy)}
+  .sortiment li:last-child{border-bottom:2px solid var(--navy)}
+  .sortiment strong{display:block;font-size:20px}
+  .sortiment span{color:var(--muted)}
+  .img{border-radius:24px;background:var(--sky);aspect-ratio:4/3;display:grid;place-items:center;color:var(--muted);overflow:hidden}
+  .img img{width:100%;height:100%;object-fit:cover}
+
+  table{width:100%;border-collapse:collapse}
+  td{padding:11px 0;border-bottom:1px solid #D6DEEA}
+  td:last-child{text-align:right}
+  tr.today td{font-weight:800}
+  .avvikande{background:var(--sky);border-radius:14px;padding:14px 18px;margin-top:20px}
+  .map{border:0;width:100%;min-height:340px;height:100%;border-radius:24px;background:var(--sky)}
+
+  .contact{background:var(--sky);border-radius:24px;padding:48px clamp(20px,4vw,48px)}
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .fields .full{grid-column:1/-1}
+  label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
+  input,textarea{width:100%;font:inherit;padding:12px 14px;border:2px solid #C7D3E6;border-radius:10px;background:#fff;color:var(--navy)}
+  input:focus,textarea:focus{border-color:var(--navy);outline:none}
+  textarea{min-height:110px;resize:vertical}
+  .error{color:var(--closed);font-weight:600}
+  .done h3{font:800 30px var(--font);margin:0 0 6px}
+
+  .review{text-align:center;padding:80px 0}
+  .review p{max-width:44ch;margin:0 auto 28px;color:var(--muted)}
+  footer{border-top:2px solid var(--navy);padding:28px 0 56px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;color:var(--muted);font-size:15px}
+
+  @media (max-width:820px){
+    nav a:not(:last-child){display:none}
+    .two,.fields,.status{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="logo" href="#" data-bind="namn"></a>
+    <nav><a href="#om">Om oss</a><a href="#hitta">Hitta hit</a><a href="#kontakt">Kontakt</a></nav>
+  </header>
+
+  <div class="hero">
+    <h1 data-bind="rubrik"></h1>
+    <p data-bind="slogan"></p>
+  </div>
+
+  <div class="status" role="status" aria-live="polite">
+    <div>
+      <div class="status-main"><span class="dot" id="dot"></span><span id="status-text"></span></div>
+      <p class="status-sub" id="status-sub"></p>
+    </div>
+    <a class="btn" id="directions" target="_blank" rel="noopener">Vägbeskrivning</a>
+  </div>
+
+  <section class="two" id="om">
+    <div class="about">
+      <h2>Om butiken</h2>
+      <div id="om-text"></div>
+    </div>
+    <div>
+      <h2>I butiken</h2>
+      <ul class="sortiment" id="sortiment"></ul>
+    </div>
+  </section>
+
+  <div class="img" id="bild">Er bild här</div>
+
+  <section class="two" id="hitta">
+    <div>
+      <h2>Öppettider</h2>
+      <table id="hours"></table>
+      <div class="avvikande" id="avvikande" hidden></div>
+      <p style="margin-top:28px"><span data-bind="adress"></span><br><a data-tel></a><br><a data-mail></a></p>
+    </div>
+    <iframe class="map" id="map" title="Karta" loading="lazy"></iframe>
+  </section>
+
+  <div class="contact" id="kontakt">
+    <h2>Fråga oss</h2>
+    <p class="lead">Undrar du om vi har något hemma, eller vill boka en kurs? Skriv så svarar vi inom en arbetsdag.</p>
+    <form name="kontakt" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="kontaktform">
+      <input type="hidden" name="form-name" value="kontakt">
+      <p hidden><label>Lämna tomt <input name="bot-field"></label></p>
+      <div class="fields">
+        <div><label for="namn">Namn</label><input id="namn" name="namn" autocomplete="name" required></div>
+        <div><label for="epost">E-post</label><input id="epost" name="epost" type="email" autocomplete="email" required></div>
+        <div class="full"><label for="meddelande">Meddelande</label><textarea id="meddelande" name="meddelande" required></textarea></div>
+      </div>
+      <p class="error" id="error" hidden></p>
+      <button class="btn" type="submit" id="submit" style="margin-top:18px">Skicka meddelande</button>
+    </form>
+    <div class="done" id="done" hidden role="status">
+      <h3>Meddelandet är skickat</h3>
+      <p>Tack! Vi svarar så snart vi kan, oftast inom en arbetsdag.</p>
+    </div>
+  </div>
+
+  <section class="review">
+    <h2>Gillade du besöket?</h2>
+    <p>Ett omdöme på Google hjälper fler att hitta hit.</p>
+    <a class="btn" id="review-link" target="_blank" rel="noopener">Skriv en recension</a>
+  </section>
+
+  <footer>
+    <span>© <span id="year"></span> <span data-bind="namn"></span></span>
+    <span data-bind="adress"></span>
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   ÄNDRA HÄR FÖR VARJE KUND
+   ============================================================ */
+const CONFIG = {
+  namn: "Garnkorgen",
+  rubrik: "Garn, stickor och goda råd",
+  slogan: "Stickbutiken med över 600 färger på hyllan och hjälp när mönstret krånglar.",
+  telefon: "012-345 11 22",
+  epost: "hej@garnkorgen.se",
+  adress: "Kyrkogatan 8, 123 45 Småstad",
+  googleRecension: "https://g.page/r/DIN-LANK/review",
+  bild: "",  // t.ex. "bilder/butiken.webp"
+  om: [
+    "Vi öppnade 2015 med en enkel idé: garn ska man få känna på innan man köper det.",
+    "Idag har vi ett av regionens största sortiment och håller stickkurser varje vecka."
+  ],
+  sortiment: [
+    { namn: "Garn", text: "Ull, alpacka, bomull och lin från nordiska spinnerier" },
+    { namn: "Stickor och virknålar", text: "Rundstickor, strumpstickor och utbytbara set" },
+    { namn: "Mönster och böcker", text: "Svenska och norska mönster för alla nivåer" },
+    { namn: "Kurser", text: "Nybörjarkurs, sockor och tröjor, varje vecka" }
+  ],
+  oppettider: {
+    mandag: ["10:00","18:00"], tisdag: ["10:00","18:00"], onsdag: ["10:00","18:00"],
+    torsdag: ["10:00","19:00"], fredag: ["10:00","18:00"], lordag: ["10:00","15:00"], sondag: null
+  },
+  avvikande: ""  // t.ex. "Stängt 24–26 december. Öppet 10–14 den 27 december."
+};
+/* ============================================================ */
+
+const DAGAR = ["sondag","mandag","tisdag","onsdag","torsdag","fredag","lordag"];
+const DAGNAMN = {mandag:"Måndag",tisdag:"Tisdag",onsdag:"Onsdag",torsdag:"Torsdag",fredag:"Fredag",lordag:"Lördag",sondag:"Söndag"};
+const $ = s => document.querySelector(s);
+const toMin = t => { const [h,m] = t.split(":").map(Number); return h*60+m; };
+const kl = t => "kl. " + t.replace(/:00$/, "");
+const telHref = t => "tel:"+t.replace(/[^\d+]/g,"");
+
+document.querySelectorAll("[data-bind]").forEach(el => el.textContent = CONFIG[el.dataset.bind]);
+document.querySelectorAll("[data-tel]").forEach(el => { el.textContent = CONFIG.telefon; el.href = telHref(CONFIG.telefon); });
+document.querySelectorAll("[data-mail]").forEach(el => { el.textContent = CONFIG.epost; el.href = "mailto:"+CONFIG.epost; });
+$("#review-link").href = CONFIG.googleRecension;
+$("#map").src = "https://maps.google.com/maps?q="+encodeURIComponent(CONFIG.adress)+"&z=15&output=embed";
+$("#directions").href = "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(CONFIG.adress);
+$("#year").textContent = new Date().getFullYear();
+if (CONFIG.bild) $("#bild").innerHTML = `<img src="${CONFIG.bild}" alt="${CONFIG.namn}">`;
+CONFIG.om.forEach(t => { const p = document.createElement("p"); p.textContent = t; $("#om-text").append(p); });
+CONFIG.sortiment.forEach(s => { const li = document.createElement("li"); li.innerHTML = "<strong></strong><span></span>"; li.querySelector("strong").textContent = s.namn; li.querySelector("span").textContent = s.text; $("#sortiment").append(li); });
+if (CONFIG.avvikande) { $("#avvikande").hidden = false; $("#avvikande").textContent = CONFIG.avvikande; }
+
+// Öppettider
+const idagKey = DAGAR[new Date().getDay()];
+["mandag","tisdag","onsdag","torsdag","fredag","lordag","sondag"].forEach(d => {
+  const h = CONFIG.oppettider[d], tr = document.createElement("tr");
+  if (d === idagKey) tr.className = "today";
+  tr.innerHTML = `<td>${DAGNAMN[d]}</td><td>${h ? h[0]+"–"+h[1] : "Stängt"}</td>`;
+  $("#hours").append(tr);
+});
+
+// Öppet nu – uppdateras varje minut
+function nextOpening(from){
+  for (let i = 1; i <= 7; i++) {
+    const d = new Date(from); d.setDate(d.getDate()+i);
+    const h = CONFIG.oppettider[DAGAR[d.getDay()]];
+    if (h) return (i === 1 ? "imorgon" : DAGNAMN[DAGAR[d.getDay()]].toLowerCase()) + " " + kl(h[0]);
+  }
+  return null;
+}
+function updateStatus(){
+  const nu = new Date(), h = CONFIG.oppettider[DAGAR[nu.getDay()]];
+  const m = nu.getHours()*60 + nu.getMinutes();
+  let open = false, sub = "";
+  if (h && m >= toMin(h[0]) && m < toMin(h[1])) {
+    open = true;
+    const kvar = toMin(h[1]) - m;
+    sub = kvar <= 30 ? `Stänger om ${kvar} minuter` : `Stänger ${kl(h[1])}`;
+  } else if (h && m < toMin(h[0])) {
+    sub = `Öppnar idag ${kl(h[0])}`;
+  } else {
+    const n = nextOpening(nu); sub = n ? `Öppnar ${n}` : "";
+  }
+  $("#status-text").textContent = open ? "Öppet nu" : "Stängt just nu";
+  $("#dot").classList.toggle("closed", !open);
+  $("#status-sub").textContent = sub;
+}
+updateStatus(); setInterval(updateStatus, 60000);
+
+// Kontaktformulär
+$("#kontaktform").addEventListener("submit", async e => {
+  e.preventDefault();
+  const form = e.target, btn = $("#submit"), err = $("#error");
+  if (!form.reportValidity()) return;
+  err.hidden = true; btn.disabled = true; btn.textContent = "Skickar…";
+  try {
+    if (location.protocol === "file:") throw new Error("preview");
+    const res = await fetch("/", { method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"}, body:new URLSearchParams(new FormData(form)).toString() });
+    if (!res.ok) throw new Error("fail");
+    form.hidden = true; $("#done").hidden = false;
+  } catch (x) {
+    err.textContent = x.message === "preview"
+      ? "Förhandsvisning: meddelandet skickas först när sidan ligger på Netlify."
+      : `Meddelandet gick inte att skicka. Försök igen eller ring ${CONFIG.telefon}.`;
+    err.hidden = false; btn.disabled = false; btn.textContent = "Skicka meddelande";
+  }
+});
+</script>
+</body>
+</html>
