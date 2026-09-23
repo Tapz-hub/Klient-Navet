@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- BYT: titel och beskrivning för varje kund -->
+<title>Bistro Linden – mat, vin och lunch vid torget</title>
+<meta name="description" content="Säsongens råvaror, dagens lunch och bord att boka online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --olive:#3D4A2A; --olive-deep:#2E3820; --mustard:#D9A441; --paper:#FFFDF8;
+    --ink:#22261A; --linen:#EFEBDC; --muted:#5E6452; --tomato:#B8432F;
+    --display:"Young Serif", Georgia, "Times New Roman", serif;
+    --body:"Work Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--body)}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--mustard);outline-offset:3px}
+  .wrap{width:min(1100px,100% - 40px);margin-inline:auto}
+  .btn{display:inline-block;background:var(--mustard);color:var(--ink);border:0;border-radius:6px;padding:14px 24px;font:600 16px/1 var(--body);text-decoration:none;cursor:pointer}
+  .btn:hover{background:#E6B75A}
+  .btn[disabled]{opacity:.6;cursor:default}
+
+  .top{background:var(--olive);color:var(--paper);padding-bottom:120px}
+  header{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+  .logo{font:22px var(--display);text-decoration:none}
+  nav{display:flex;gap:22px}
+  nav a{text-decoration:none;font-weight:500}
+  .hero{padding:64px 0 0}
+  .hero h1{font:clamp(64px,13vw,168px)/.9 var(--display);color:var(--mustard);margin:0 0 28px;letter-spacing:-.02em}
+  .hero p{font-size:20px;max-width:40ch;margin:0 0 12px;color:#E4E6D6}
+  .now{font-weight:600;color:var(--paper)}
+
+  /* Bokningspanel */
+  .book{background:var(--paper);color:var(--ink);border-radius:10px;margin-top:-80px;padding:36px clamp(20px,4vw,48px);box-shadow:0 30px 60px -30px rgba(46,56,32,.5);position:relative}
+  .book h2{margin-top:0}
+  .row{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:16px;align-items:end}
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+  .fields .full{grid-column:1/-1}
+  label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+  input,select,textarea{width:100%;font:inherit;padding:12px 14px;border:1.5px solid #D5D0BC;border-radius:6px;background:#fff;color:var(--ink)}
+  input:focus,select:focus,textarea:focus{border-color:var(--olive);outline:none}
+  textarea{min-height:80px;resize:vertical}
+  .stepper{display:flex;border:1.5px solid #D5D0BC;border-radius:6px;overflow:hidden;background:#fff}
+  .stepper button{width:48px;border:0;background:var(--linen);font:600 20px var(--body);cursor:pointer;color:var(--ink)}
+  .stepper button:disabled{opacity:.4;cursor:default}
+  .stepper input{border:0;text-align:center;border-radius:0;-moz-appearance:textfield}
+  .stepper input::-webkit-inner-spin-button{-webkit-appearance:none}
+  .note{color:var(--muted);font-size:15px;margin:10px 0 0}
+  .error{color:var(--tomato);font-weight:500}
+  .actions{margin-top:22px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+  .done{padding:12px 0}
+  .done h3{font:32px var(--display);margin:0 0 6px}
+
+  section{padding:80px 0}
+  h2{font:clamp(34px,5vw,52px)/1.05 var(--display);margin:0 0 12px}
+  .lead{color:var(--muted);max-width:52ch;margin:0 0 32px}
+
+  /* Meny */
+  .menu{display:grid;grid-template-columns:1fr 1fr;gap:48px 64px}
+  .menu h3{font:26px var(--display);margin:0 0 14px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
+  .item{padding:10px 0}
+  .item .line{display:flex;align-items:baseline;gap:8px;font-weight:600}
+  .item .dots{flex:1;border-bottom:2px dotted #B9B39C;transform:translateY(-4px)}
+  .item p{margin:2px 0 0;color:var(--muted);font-size:15px;max-width:44ch}
+  .lunch{background:var(--linen);border-radius:10px;padding:32px clamp(20px,4vw,40px);display:grid;grid-template-columns:auto 1fr;gap:12px 40px;align-items:start}
+  .lunch .price{font:44px/1 var(--display);color:var(--olive)}
+
+  .info{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+  table{width:100%;border-collapse:collapse}
+  td{padding:10px 0;border-bottom:1px solid #DDD8C4}
+  td:last-child{text-align:right}
+  tr.today td{font-weight:600;color:var(--olive)}
+  .map{border:0;width:100%;height:100%;min-height:320px;border-radius:10px;background:var(--linen)}
+  .review{background:var(--olive-deep);color:var(--paper);text-align:center;padding:72px 24px}
+  .review h2{color:var(--mustard)}
+  .review p{max-width:44ch;margin:0 auto 28px;color:#D9DCCB}
+  footer{padding:36px 0 56px;color:var(--muted);font-size:15px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+
+  @media (max-width:820px){
+    nav a:not(.btn){display:none}
+    .row,.fields,.menu,.info,.lunch{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="wrap">
+    <header>
+      <a class="logo" href="#" data-bind="namn"></a>
+      <nav><a href="#meny">Meny</a><a href="#hitta">Hitta hit</a><a href="#boka">Boka bord</a></nav>
+    </header>
+    <div class="hero">
+      <h1 data-bind="namn"></h1>
+      <p data-bind="slogan"></p>
+      <p class="now" id="now"></p>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="book" id="boka">
+    <h2>Boka bord</h2>
+    <form name="bordsbokning" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="bokform">
+      <input type="hidden" name="form-name" value="bordsbokning">
+      <p hidden><label>Lämna tomt <input name="bot-field"></label></p>
+      <div class="row">
+        <div><label for="datum">Datum</label><input type="date" id="datum" name="datum" required></div>
+        <div><label for="tid">Tid</label><select id="tid" name="tid" required></select></div>
+        <div>
+          <label for="gaster">Antal gäster</label>
+          <div class="stepper">
+            <button type="button" id="minus" aria-label="Färre gäster">−</button>
+            <input type="number" id="gaster" name="gaster" value="2" min="1" readonly>
+            <button type="button" id="plus" aria-label="Fler gäster">+</button>
+          </div>
+        </div>
+      </div>
+      <p class="note" id="stor-grupp"></p>
+      <div class="fields">
+        <div><label for="namn">Namn</label><input id="namn" name="namn" autocomplete="name" required></div>
+        <div><label for="telefon">Telefon</label><input id="telefon" name="telefon" type="tel" autocomplete="tel" required></div>
+        <div class="full"><label for="epost">E-post</label><input id="epost" name="epost" type="email" autocomplete="email" required></div>
+        <div class="full"><label for="onskemal">Allergier eller önskemål (valfritt)</label><textarea id="onskemal" name="onskemal"></textarea></div>
+      </div>
+      <p class="error" id="error" hidden></p>
+      <div class="actions">
+        <button class="btn" type="submit" id="submit">Boka bord</button>
+        <span class="note">Vi bekräftar bokningen via e-post.</span>
+      </div>
+    </form>
+    <div class="done" id="done" hidden role="status">
+      <h3>Bordet är förfrågat</h3>
+      <p id="done-text"></p>
+    </div>
+  </div>
+
+  <section id="meny">
+    <h2>Meny</h2>
+    <p class="lead" data-bind="menyText"></p>
+    <div class="lunch" id="lunch-box">
+      <div class="price" id="lunch-pris"></div>
+      <div><strong id="lunch-rubrik"></strong><p style="margin:4px 0 0" id="lunch-text"></p></div>
+    </div>
+    <div class="menu" id="menu" style="margin-top:56px"></div>
+  </section>
+
+  <section class="info" id="hitta">
+    <div>
+      <h2>Öppettider</h2>
+      <table id="hours"></table>
+      <p style="margin-top:28px"><span data-bind="adress"></span><br><a data-tel></a><br><a data-mail></a></p>
+    </div>
+    <iframe class="map" id="map" title="Karta" loading="lazy"></iframe>
+  </section>
+</div>
+
+<section class="review">
+  <h2>Tack för besöket</h2>
+  <p>Berätta gärna på Google vad du tyckte. Det hjälper nya gäster att hitta hit.</p>
+  <a class="btn" id="review-link" target="_blank" rel="noopener">Skriv en recension</a>
+</section>
+
+<div class="wrap">
+  <footer>
+    <span>© <span id="year"></span> <span data-bind="namn"></span></span>
+    <span data-bind="adress"></span>
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   ÄNDRA HÄR FÖR VARJE KUND
+   ============================================================ */
+const CONFIG = {
+  namn: "Bistro Linden",
+  slogan: "Enkel mat på säsongens råvaror, naturvin och ett långbord vid fönstret.",
+  telefon: "012-345 67 00",
+  epost: "bord@bistrolinden.se",
+  adress: "Torget 3, 123 45 Småstad",
+  googleRecension: "https://g.page/r/DIN-LANK/review",
+  menyText: "Menyn ändras med säsongen. Fråga personalen om allergener.",
+  lunch: { visa: true, rubrik: "Dagens lunch, vardagar 11–14", text: "Varmrätt, sallad, bröd och kaffe.", pris: 135 },
+  meny: [
+    { kategori: "Förrätter", ratter: [
+      { namn: "Toast Skagen", beskrivning: "Handskalade räkor, dill, pepparrot, löjrom", pris: 165 },
+      { namn: "Grillad spetskål", beskrivning: "Brynt smör, hasselnöt, parmesan", pris: 125 }
+    ]},
+    { kategori: "Varmrätter", ratter: [
+      { namn: "Rödingfilé", beskrivning: "Potatispuré, vitvinssås, rostad fänkål", pris: 285 },
+      { namn: "Högrevsburgare", beskrivning: "Cheddar, picklad lök, pommes", pris: 215 },
+      { namn: "Svamprisotto", beskrivning: "Karl Johan, timjan, lagrad ost", pris: 225 }
+    ]},
+    { kategori: "Efterrätter", ratter: [
+      { namn: "Crème brûlée", beskrivning: "Vanilj, säsongens bär", pris: 105 },
+      { namn: "Chokladtryffel", beskrivning: "En bit till kaffet", pris: 45 }
+    ]},
+    { kategori: "Dryck", ratter: [
+      { namn: "Husets vin, glas", beskrivning: "Rött, vitt eller orange", pris: 115 },
+      { namn: "Alkoholfri drink", beskrivning: "Veckans fläder- eller rabarberdrink", pris: 75 }
+    ]}
+  ],
+  oppettider: {
+    mandag: null, tisdag: ["11:00","22:00"], onsdag: ["11:00","22:00"], torsdag: ["11:00","23:00"],
+    fredag: ["11:00","00:00"], lordag: ["16:00","00:00"], sondag: ["16:00","21:00"]
+  },
+  sistaBokning: 90,  // minuter före stängning som sista bordet kan bokas
+  intervall: 30,
+  maxGaster: 8       // större sällskap uppmanas att ringa
+};
+/* ============================================================ */
+
+const DAGAR = ["sondag","mandag","tisdag","onsdag","torsdag","fredag","lordag"];
+const DAGNAMN = {mandag:"Måndag",tisdag:"Tisdag",onsdag:"Onsdag",torsdag:"Torsdag",fredag:"Fredag",lordag:"Lördag",sondag:"Söndag"};
+const $ = s => document.querySelector(s);
+const toMin = t => { let [h,m] = t.split(":").map(Number); if (h === 0 && m === 0) return 1440; return h*60+m; };
+const fromMin = m => String(Math.floor(m/60)%24).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
+const iso = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const kr = n => n.toLocaleString("sv-SE")+" kr";
+const telHref = t => "tel:"+t.replace(/[^\d+]/g,"");
+
+document.querySelectorAll("[data-bind]").forEach(el => el.textContent = CONFIG[el.dataset.bind]);
+document.querySelectorAll("[data-tel]").forEach(el => { el.textContent = CONFIG.telefon; el.href = telHref(CONFIG.telefon); });
+document.querySelectorAll("[data-mail]").forEach(el => { el.textContent = CONFIG.epost; el.href = "mailto:"+CONFIG.epost; });
+$("#review-link").href = CONFIG.googleRecension;
+$("#map").src = "https://maps.google.com/maps?q="+encodeURIComponent(CONFIG.adress)+"&z=15&output=embed";
+$("#year").textContent = new Date().getFullYear();
+
+// Öppet idag
+const nu = new Date(), idagKey = DAGAR[nu.getDay()], idagTid = CONFIG.oppettider[idagKey];
+$("#now").textContent = idagTid ? `Öppet idag ${idagTid[0]}–${idagTid[1]}` : "Stängt idag";
+
+// Öppettider
+["mandag","tisdag","onsdag","torsdag","fredag","lordag","sondag"].forEach(d => {
+  const h = CONFIG.oppettider[d], tr = document.createElement("tr");
+  if (d === idagKey) tr.className = "today";
+  tr.innerHTML = `<td>${DAGNAMN[d]}</td><td>${h ? h[0]+"–"+h[1] : "Stängt"}</td>`;
+  $("#hours").append(tr);
+});
+
+// Lunch och meny
+if (CONFIG.lunch.visa) {
+  $("#lunch-pris").textContent = kr(CONFIG.lunch.pris);
+  $("#lunch-rubrik").textContent = CONFIG.lunch.rubrik;
+  $("#lunch-text").textContent = CONFIG.lunch.text;
+} else $("#lunch-box").remove();
+CONFIG.meny.forEach(k => {
+  const div = document.createElement("div");
+  const h = document.createElement("h3"); h.textContent = k.kategori; div.append(h);
+  k.ratter.forEach(r => {
+    const it = document.createElement("div"); it.className = "item";
+    it.innerHTML = `<div class="line"><span class="n"></span><span class="dots"></span><span>${kr(r.pris)}</span></div><p></p>`;
+    it.querySelector(".n").textContent = r.namn; it.querySelector("p").textContent = r.beskrivning;
+    div.append(it);
+  });
+  $("#menu").append(div);
+});
+
+// Bokning: datum och tider
+const datum = $("#datum"), tid = $("#tid");
+datum.min = iso(nu);
+const maxD = new Date(); maxD.setDate(maxD.getDate()+60); datum.max = iso(maxD);
+// Första öppna dag som standard
+for (let i = 0; i < 14; i++) { const d = new Date(); d.setDate(d.getDate()+i); if (CONFIG.oppettider[DAGAR[d.getDay()]]) { datum.value = iso(d); break; } }
+
+function renderTimes(){
+  tid.innerHTML = "";
+  if (!datum.value) return;
+  const [y,m,d] = datum.value.split("-").map(Number);
+  const dag = new Date(y, m-1, d);
+  const h = CONFIG.oppettider[DAGAR[dag.getDay()]];
+  const add = (txt, val, dis) => { const o = document.createElement("option"); o.textContent = txt; o.value = val; o.disabled = !!dis; tid.append(o); };
+  if (!h) { add("Stängt den här dagen", "", true); return; }
+  const arIdag = datum.value === iso(new Date());
+  const tidigast = arIdag ? new Date().getHours()*60 + new Date().getMinutes() + 30 : 0;
+  let antal = 0;
+  for (let t = toMin(h[0]); t <= toMin(h[1]) - CONFIG.sistaBokning; t += CONFIG.intervall) {
+    if (t < tidigast) continue; add(fromMin(t), fromMin(t)); antal++;
+  }
+  if (!antal) add("Inga fler tider idag", "", true);
+}
+datum.addEventListener("change", renderTimes); renderTimes();
+
+// Antal gäster
+const g = $("#gaster");
+function setG(n){
+  n = Math.max(1, Math.min(CONFIG.maxGaster, n)); g.value = n;
+  $("#minus").disabled = n <= 1; $("#plus").disabled = n >= CONFIG.maxGaster;
+  $("#stor-grupp").textContent = n >= CONFIG.maxGaster ? `Är ni fler än ${CONFIG.maxGaster}? Ring oss på ${CONFIG.telefon} så ordnar vi plats.` : "";
+}
+$("#minus").onclick = () => setG(+g.value - 1);
+$("#plus").onclick = () => setG(+g.value + 1);
+setG(2);
+
+// Skicka
+$("#bokform").addEventListener("submit", async e => {
+  e.preventDefault();
+  const form = e.target, btn = $("#submit"), err = $("#error");
+  if (!tid.value) { err.textContent = "Välj en dag och tid när vi har öppet."; err.hidden = false; return; }
+  if (!form.reportValidity()) return;
+  err.hidden = true; btn.disabled = true; btn.textContent = "Skickar…";
+  try {
+    if (location.protocol === "file:") throw new Error("preview");
+    const res = await fetch("/", { method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"}, body:new URLSearchParams(new FormData(form)).toString() });
+    if (!res.ok) throw new Error("fail");
+    const [y,m,d] = datum.value.split("-").map(Number);
+    const dagTxt = new Date(y,m-1,d).toLocaleDateString("sv-SE",{weekday:"long",day:"numeric",month:"long"});
+    form.hidden = true; $("#done").hidden = false;
+    $("#done-text").textContent = `${g.value} personer, ${dagTxt} kl. ${tid.value}. Du får en bekräftelse via e-post.`;
+  } catch (x) {
+    err.textContent = x.message === "preview"
+      ? "Förhandsvisning: bokningen skickas först när sidan ligger på Netlify."
+      : `Bokningen gick inte att skicka. Försök igen eller ring ${CONFIG.telefon}.`;
+    err.hidden = false; btn.disabled = false; btn.textContent = "Boka bord";
+  }
+});
+</script>
+</body>
+</html>
